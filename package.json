@@ -1,0 +1,44 @@
+{
+  "name": "workforce-mcp",
+  "version": "1.2.0",
+  "description": "Load specialist context (UI, DE, SRE, …) into your agent for the work at hand — not a hiring tool",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "workforce-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/copy-assets.mjs",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "validate-packs": "tsx scripts/validate-packs.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "workforce",
+    "ai-agents",
+    "cursor",
+    "claude"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
