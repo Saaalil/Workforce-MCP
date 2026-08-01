@@ -20,6 +20,8 @@ Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`,
 
 ## Install (Cursor)
 
+**Use npx** (works for everyone — no local `node_modules` required):
+
 ```json
 {
   "mcpServers": {
@@ -31,7 +33,9 @@ Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`,
 }
 ```
 
-Or run the binary after install: `npx -y @saaalil/workforce-mcp`.
+Do **not** set `command` to `node` with `./node_modules/@saaalil/workforce-mcp/...` unless you have already run `npm i @saaalil/workforce-mcp` in that same workspace. That path is why installs fail with `MODULE_NOT_FOUND`.
+
+Or run: `npx -y @saaalil/workforce-mcp`.
 
 Local clone:
 
