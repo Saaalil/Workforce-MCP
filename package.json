@@ -1,6 +1,6 @@
 {
-  "name": "workforce-mcp",
-  "version": "1.2.0",
+  "name": "@saaalil/workforce-mcp",
+  "version": "1.2.1",
   "description": "Load specialist context (UI, DE, SRE, …) into your agent for the work at hand — not a hiring tool",
   "type": "module",
   "main": "dist/index.js",
@@ -9,7 +9,9 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "src/assets",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc && node scripts/copy-assets.mjs",
@@ -18,7 +20,8 @@
     "validate-packs": "tsx scripts/validate-packs.ts",
     "smoke": "tsx scripts/smoke.ts",
     "audit": "tsx scripts/deep-audit.ts",
-    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke && npm run audit"
+    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke && npm run audit",
+    "pack:check": "npm pack --dry-run"
   },
   "engines": {
     "node": ">=20"
@@ -31,7 +34,19 @@
     "cursor",
     "claude"
   ],
+  "author": "Salil Hiremath",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saaalil/Workforce-MCP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Saaalil/Workforce-MCP/issues"
+  },
+  "homepage": "https://github.com/Saaalil/Workforce-MCP#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
     "gray-matter": "^4.0.3",

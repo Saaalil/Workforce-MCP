@@ -1,5 +1,9 @@
 # Workforce MCP
 
+<p align="center">
+  <img src="src/assets/logo.png" alt="Workforce" width="96" height="96" />
+</p>
+
 **Specialist context for your agent — not a hiring tool.**
 
 One MCP. When you need UI work, load **UI** context. Pipeline work → **DE**. Reliability → **SRE**. Your agent gets full production-grade skills, discovery questions, stack defaults, quality bars, and handoffs for that specialty — without installing separate skill packs per project.
@@ -21,11 +25,13 @@ Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`,
   "mcpServers": {
     "workforce": {
       "command": "npx",
-      "args": ["-y", "workforce-mcp"]
+      "args": ["-y", "@saaalil/workforce-mcp"]
     }
   }
 }
 ```
+
+Or run the binary after install: `npx -y @saaalil/workforce-mcp`.
 
 Local clone:
 

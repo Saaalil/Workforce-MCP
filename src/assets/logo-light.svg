@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="Workforce">
+  <g
+    fill="none"
+    stroke="#000"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M64 14 L106 38 L106 90 L64 114 L22 90 L22 38 Z"/>
+    <path d="M42 38 V66 C42 79 51 86 64 86 C77 86 86 79 86 66 V38"/>
+    <path d="M52 78 L64 66 L76 78"/>
+  </g>
+</svg>

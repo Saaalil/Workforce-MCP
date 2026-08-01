@@ -4,6 +4,7 @@ import { ROLE_IDS, type RoleId } from "./types.js";
 import { getPack, loadAllPacks } from "./roles/loader.js";
 import { PRIMARY_SHORT_FLAGS, ROLE_ALIASES } from "./roles/aliases.js";
 import { renderSpecialistBrief } from "./lib/render-brief.js";
+import { WORKFORCE_ICONS, WORKFORCE_WEBSITE_URL } from "./lib/brand.js";
 import { registerListRoles } from "./tools/list-roles.js";
 import { registerSpecialize } from "./tools/specialize.js";
 import { registerConsult } from "./tools/consult.js";
@@ -63,7 +64,12 @@ export function createWorkforceServer(): McpServer {
 
   const server = new McpServer({
     name: "workforce-mcp",
-    version: "1.2.0",
+    title: "Workforce",
+    version: "1.2.1",
+    description:
+      "Specialist context for your agent — UI, DE, SRE, and more. Not a hiring tool.",
+    websiteUrl: WORKFORCE_WEBSITE_URL,
+    icons: WORKFORCE_ICONS,
   });
 
   registerListRoles(server);
