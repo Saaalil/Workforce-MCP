@@ -20,7 +20,7 @@ function registerSpecialistPrompt(
     promptName,
     {
       title: `${flag} — ${pack.frontmatter.title} context`,
-      description: `Load ${pack.frontmatter.title} (${flag}) specialist context: ${pack.frontmatter.one_liner}. Not hiring — equips the agent for this work.`,
+      description: `Load ${pack.frontmatter.title} (${flag}) specialist context: ${pack.frontmatter.one_liner}. Agent investigates, then Goal / Blocking questions / Assumptions / Plan and stops until approved. Not hiring.`,
       argsSchema: {
         task: z.string().describe("The work to do under this specialist context"),
         context: z

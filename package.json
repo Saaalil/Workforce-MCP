@@ -17,7 +17,8 @@
     "dev": "tsx src/index.ts",
     "validate-packs": "tsx scripts/validate-packs.ts",
     "smoke": "tsx scripts/smoke.ts",
-    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke"
+    "audit": "tsx scripts/deep-audit.ts",
+    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke && npm run audit"
   },
   "engines": {
     "node": ">=20"

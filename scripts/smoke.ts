@@ -32,6 +32,11 @@ if (!constitution.includes("not** a hiring") && !constitution.includes("not a hi
 } else {
   ok("Constitution: not-hiring framing");
 }
+if (!constitution.includes("Before implementing") || !constitution.includes("Blocking questions")) {
+  fail("Constitution must include contractor Before implementing protocol");
+} else {
+  ok("Constitution: contractor intake protocol");
+}
 
 const distinctive: Record<string, string[]> = {
   architect: ["SLO", "one-way"],
@@ -60,8 +65,17 @@ for (const id of ROLE_IDS) {
   if (!brief.includes("not** a hiring") && !brief.includes("not a hiring")) {
     fail(`${id}: brief missing not-hiring framing`);
   }
-  if (!brief.includes("Ask the user these questions NOW")) {
-    fail(`${id}: ask mode missing discovery gate`);
+  if (!brief.includes("Required response format (before implementing)")) {
+    fail(`${id}: ask mode missing contractor intake format`);
+  }
+  if (!brief.includes("**Goal.**") || !brief.includes("**Plan.**")) {
+    fail(`${id}: ask brief missing Goal/Plan framing`);
+  }
+  if (!brief.includes("Before implementing")) {
+    fail(`${id}: constitution missing Before implementing`);
+  }
+  if (brief.includes("Ask the user these questions NOW")) {
+    fail(`${id}: still uses old dump-questions framing`);
   }
   if (brief.includes("Workforce Hire:")) {
     fail(`${id}: still uses Hire branding`);

@@ -23,7 +23,7 @@ const INPUT = {
     .optional()
     .describe("Optional stack, deadline, brand, compliance, or budget constraints"),
   mode: WorkModeSchema.optional().describe(
-    "ask (default): clarify with discovery questions first; plan: plan under this specialty; execute: do the work stating assumptions"
+    "ask (default): investigate then Goal/Blocking questions/Assumptions/Plan and stop; plan: same with a concrete plan; execute: implement after approval"
   ),
 };
 
@@ -65,8 +65,9 @@ export function registerSpecialize(server: McpServer): void {
     {
       title: "Load Specialist Context",
       description:
-        "Load full specialist context into the agent for a task (skills, discovery questions, stack defaults, quality bars, anti-patterns, handoffs). " +
-        "Use when the user says workforce-UI, workforce-DE, DE, Backend, SRE, Ops, etc. " +
+        "Load full specialist context into the agent for a task (skills, stack defaults, quality bars, anti-patterns, handoffs). " +
+        "The agent must investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and stop until approved (unless the change is trivially small). " +
+        "Use when the user says workforce/UI, workforce/DE, DE, Backend, SRE, Ops, etc. " +
         "This is NOT hiring people — it equips the agent to do that specialty of work at full potential. " +
         "Short flags: DE UI FE BE DS ML AI ARCH OPS SRE MON SEC QA.",
       inputSchema: INPUT,

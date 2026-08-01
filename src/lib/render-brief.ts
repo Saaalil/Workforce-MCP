@@ -76,40 +76,60 @@ export function renderSpecialistBrief(opts: {
   parts.push(sectionOrEmpty(pack, "Identity / stance"));
   parts.push("");
 
-  if (mode === "ask") {
-    parts.push("## Ask the user these questions NOW");
+  if (mode === "ask" || mode === "plan") {
+    parts.push("## Required response format (before implementing)");
     parts.push("");
     parts.push(
-      "Do not produce designs, code, architecture, or other deliverables until the user answers (or explicitly skips). Ask like a senior specialist clarifying scope before executing."
+      "After a quick investigate of the repo, reply with **exactly** this structure and then **stop** — do not implement yet (unless proportionality says the change is trivial: typo/rename/~20 lines with one obvious fix)."
+    );
+    parts.push("");
+    parts.push("**Goal.** Restate the work and acceptance criteria in your own words.");
+    parts.push("");
+    parts.push(
+      "**Blocking questions (0–3).** Only if a wrong answer throws work away. Each question must include your recommended default. If none, say zero."
+    );
+    parts.push("");
+    parts.push(
+      "**Assumptions.** Numbered, specific, falsifiable (data / failure / boundaries / state / environment / scope / testing as relevant)."
+    );
+    parts.push("");
+    parts.push(
+      "**Plan.** Files to create/modify, key signatures, order of work; name rejected alternatives in one clause each."
+    );
+    parts.push("");
+    parts.push("Then wait for approval.");
+    parts.push("");
+    if (mode === "plan") {
+      parts.push(
+        "You are in `plan` mode: make the Plan section concrete and complete; still do not implement until approved."
+      );
+      parts.push("");
+    }
+    parts.push("### Specialty discovery lens (optional — for blocking Qs / assumptions only)");
+    parts.push("");
+    parts.push(
+      "Do **not** ask all of these. Investigate first. Promote at most 0–3 into Blocking questions (with defaults) if they would throw work away; otherwise fold into Assumptions."
     );
     parts.push("");
     questions.forEach((q, i) => parts.push(`${i + 1}. ${q}`));
     parts.push("");
-    parts.push("## After answers — workflow checklist");
-  } else if (mode === "plan") {
-    parts.push("## Plan mode");
-    parts.push("");
-    parts.push(
-      "Produce a plan and artifacts checklist. Still surface any unanswered critical questions first if they block a one-way door."
-    );
-    parts.push("");
-    parts.push("### Outstanding discovery questions");
-    parts.push("");
-    questions.forEach((q, i) => parts.push(`${i + 1}. ${q}`));
-    parts.push("");
-    parts.push("## Workflow checklist");
+    parts.push("## Specialty workflow checklist (for the Plan)");
   } else {
-    parts.push("## Execute mode");
+    parts.push("## Execute mode (approved)");
     parts.push("");
     parts.push(
-      "Proceed with best-effort assumptions only where answers are missing; **state assumptions explicitly**. Prefer reversible decisions. Still refuse one-way doors without constraints."
+      "Treat this as **after approval**: implement the agreed plan. If an assumption fails mid-flight, stop and report — do not quietly change the design."
     );
     parts.push("");
-    parts.push("### Assumptions checklist (confirm or state defaults)");
+    parts.push(
+      "State any remaining assumptions explicitly. Prefer reversible decisions. Still refuse one-way doors without constraints."
+    );
+    parts.push("");
+    parts.push("### Assumption reminders from this specialty");
     parts.push("");
     questions.forEach((q, i) => parts.push(`${i + 1}. ${q}`));
     parts.push("");
-    parts.push("## Workflow checklist");
+    parts.push("## Specialty workflow checklist");
   }
 
   parts.push("");
@@ -147,7 +167,7 @@ export function renderSpecialistBrief(opts: {
 
   parts.push("---");
   parts.push(
-    `Operate as **${fm.title} (${flag})** with the full context above. Stay in this specialty. Deliver production-grade artifacts.`
+    `Operate as **${fm.title} (${flag})** with the full context above. Stay in this specialty. Default: investigate → Goal / Blocking questions / Assumptions / Plan → stop until approved (unless the change is trivially proportional).`
   );
 
   return parts.join("\n");
@@ -194,9 +214,9 @@ export function renderConsultBrief(opts: {
     "",
     "## Response format",
     "",
-    "1. Clarify what is still unknown (max 3 questions if blocked).",
-    "2. Give concrete advice tied to quality bars.",
-    "3. List next artifacts / checklist items.",
+    "1. If advice depends on unknown one-way-door facts: at most 3 blocking questions with defaults; otherwise zero.",
+    "2. Give concrete advice tied to quality bars (state assumptions).",
+    "3. List next artifacts / checklist items — or a mini Plan if work should continue under contractor intake.",
     "4. Name any specialty switch needed (`workforce_as` / `workforce_handoff`).",
   ]
     .filter(Boolean)
@@ -235,9 +255,9 @@ export function renderHandoffBrief(opts: {
     "",
     sectionOrEmpty(to, "Identity / stance"),
     "",
-    "## Incoming specialty — ask before executing",
+    "## Incoming specialty — before implementing",
     "",
-    "Ask any unanswered items before executing:",
+    "Investigate the repo, then produce **Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan** and **stop** until approved (unless proportionality says just do it). Use the questions below only as a lens — do not dump them all.",
     "",
     ...to.questions.slice(0, 8).map((q, i) => `${i + 1}. ${q}`),
     "",

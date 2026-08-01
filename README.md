@@ -7,9 +7,8 @@ One MCP. When you need UI work, load **UI** context. Pipeline work → **DE**. R
 ## Mental model
 
 ```text
-You: "workforce-DE for the order pipeline"
-  → agent calls workforce_as({ role: "DE", task: "…" })
-  → agent receives deep Data Engineer context
+You: call MCP prompt "workforce/DE" for the order pipeline
+  → agent loads Data Engineer specialist context
   → agent works AS a data engineer on that task
 ```
 
@@ -59,7 +58,7 @@ Local clone:
 | **SEC** | `security` | Threat model / authz / supply chain |
 | **QA** | `qa` | Test strategy / release gates |
 
-Also accepts: `workforce-DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`, etc.
+Also accepts: `workforce/DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`, etc.
 
 ## Tools
 
@@ -71,13 +70,14 @@ Also accepts: `workforce-DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`,
 | `workforce_consult` | Mid-task check against a specialty’s bars |
 | `workforce_handoff` | Switch context (e.g. ARCH→FE, DE→AI) |
 
-Default **mode=`ask`**: clarify with specialty discovery questions, then execute.
+Default **mode=`ask`**: investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and **stop** until approved (unless the change is trivially small).
 
 ## Example prompts to your agent
 
-- `workforce-UI for the marketing landing page`
-- `Load DE context and design the orders gold mart`
-- `workforce_as SRE — define SLOs for checkout`
+- `workforce/UI` — design the marketing landing page
+- `workforce/DE` — design the orders gold mart
+- `workforce_as` with role `SRE` — define SLOs for checkout
+- Plain language also works: “Load DE context and design the orders gold mart”
 - `Switch context OPS → SRE after the golden path is ready`
 
 ## Develop
