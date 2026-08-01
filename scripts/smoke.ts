@@ -13,6 +13,10 @@ import {
   renderHandoffBrief,
   renderSpecialistBrief,
 } from "../src/lib/render-brief.ts";
+import {
+  renderDelegateBrief,
+  renderDiscussBrief,
+} from "../src/lib/orchestrate.ts";
 
 process.chdir(join(dirname(fileURLToPath(import.meta.url)), ".."));
 clearPackCache();
@@ -52,6 +56,7 @@ const distinctive: Record<string, string[]> = {
   monitoring: ["OpenTelemetry", "cardinality"],
   security: ["threat", "OIDC"],
   qa: ["Playwright", "P0"],
+  manager: ["delegat", "handoff", "specialty"],
 };
 
 for (const id of ROLE_IDS) {
@@ -138,6 +143,61 @@ if (!consult.includes("quality bars")) {
   fail("consult MON missing quality bars");
 } else {
   ok("consult MON");
+}
+
+const discuss = renderDiscussBrief({
+  topic: "Add checkout express pay",
+  format: "scrum",
+  roles: "UI,FE,BE,SEC,QA",
+});
+if (!discuss.includes("Workforce Discuss") || !discuss.includes("### UI")) {
+  fail("discuss scrum missing specialty voices");
+} else {
+  ok("discuss scrum");
+}
+
+const theater = renderDiscussBrief({
+  topic: "Checkout 500s after deploy — payments partial charge",
+  format: "postmortem_theater",
+  roles: "UI,FE", // must be ignored — full cast
+});
+const theaterFlags = [
+  "### ARCH",
+  "### UI",
+  "### FE",
+  "### BE",
+  "### DE",
+  "### DS",
+  "### ML",
+  "### AI",
+  "### OPS",
+  "### SRE",
+  "### MON",
+  "### SEC",
+  "### QA",
+  "### MGR",
+];
+const theaterMissing = theaterFlags.filter((h) => !theater.includes(h));
+if (
+  theaterMissing.length ||
+  !theater.includes("Corrective action board") ||
+  !theater.includes("full cast")
+) {
+  fail(
+    `postmortem_theater incomplete: missing=${theaterMissing.join(",") || "none"}`
+  );
+} else {
+  ok("discuss postmortem_theater full cast");
+}
+
+const delegate = renderDelegateBrief({
+  goal: "Ship express checkout",
+  roles: "MGR,UI,FE,BE,QA",
+});
+if (!delegate.includes("Delegation") || !delegate.includes("workforce/")) {
+  fail("delegate brief incomplete");
+} else {
+  ok("delegate plan");
 }
 
 for (const id of ROLE_IDS) {

@@ -14,6 +14,7 @@ export const ROLE_IDS = [
   "monitoring",
   "security",
   "qa",
+  "manager",
 ] as const;
 
 export type RoleId = (typeof ROLE_IDS)[number];
@@ -26,7 +27,7 @@ export const RoleInputSchema = z
   .min(1)
   .max(64)
   .describe(
-    "Short flag or full role id: DE|UI|FE|BE|DS|ML|AI|ARCH|OPS|SRE|MON|SEC|QA or data_engineer, ui_designer, ..."
+    "Short flag or full role id: DE|UI|FE|BE|DS|ML|AI|ARCH|OPS|SRE|MON|SEC|QA|MGR or data_engineer, ui_designer, manager, ..."
   );
 
 export const WorkModeSchema = z.enum(["ask", "plan", "execute"]);

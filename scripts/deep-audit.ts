@@ -102,6 +102,19 @@ for (const id of ROLE_IDS) {
     promptsByRole[id].push(name);
   }
 }
+
+// Orchestration prompts (mirror server.ts discuss/delegate registration)
+for (const name of [
+  "workforce/discuss",
+  "workforce/scrum",
+  "workforce/delegate",
+  "workforce/plan_work",
+  "workforce/postmortem",
+  "workforce/postmortem_theater",
+] as const) {
+  registeredPrompts.add(name.toLowerCase());
+}
+
 console.log("\n--- Prompt registration ---");
 console.log("total unique prompts:", registeredPrompts.size);
 for (const id of ROLE_IDS) {
@@ -130,6 +143,9 @@ const mustHave = [
   "workforce/backend",
   "workforce/frontend",
   "workforce/security",
+  "workforce/MGR",
+  "workforce/discuss",
+  "workforce/postmortem",
 ];
 for (const p of mustHave) {
   if (!registeredPrompts.has(p.toLowerCase())) fail(`missing critical prompt ${p}`);

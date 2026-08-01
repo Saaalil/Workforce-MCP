@@ -9,6 +9,11 @@ import { registerListRoles } from "./tools/list-roles.js";
 import { registerSpecialize } from "./tools/specialize.js";
 import { registerConsult } from "./tools/consult.js";
 import { registerHandoff } from "./tools/handoff.js";
+import { registerDiscuss, registerDelegate } from "./tools/discuss.js";
+import {
+  renderDelegateBrief,
+  renderDiscussBrief,
+} from "./lib/orchestrate.js";
 
 function registerSpecialistPrompt(
   server: McpServer,
@@ -65,9 +70,9 @@ export function createWorkforceServer(): McpServer {
   const server = new McpServer({
     name: "workforce-mcp",
     title: "Workforce",
-    version: "1.2.1",
+    version: "1.3.0",
     description:
-      "Specialist context for your agent — UI, DE, SRE, and more. Not a hiring tool.",
+      "Specialist context for your agent — UI, DE, SRE, MGR discuss/delegate, and more. Not a hiring tool.",
     websiteUrl: WORKFORCE_WEBSITE_URL,
     icons: WORKFORCE_ICONS,
   });
@@ -76,6 +81,132 @@ export function createWorkforceServer(): McpServer {
   registerSpecialize(server);
   registerConsult(server);
   registerHandoff(server);
+  registerDiscuss(server);
+  registerDelegate(server);
+
+  // Orchestration prompts (chips alongside specialty prompts)
+  for (const name of ["workforce/discuss", "workforce/scrum"] as const) {
+    server.registerPrompt(
+      name,
+      {
+        title: "Multi-specialty discuss",
+        description:
+          "Scrum-style (or critique/premortem/postmortem theater) discussion across Workforce specialties — challenges from each POV, then a recommended sequence.",
+        argsSchema: {
+          topic: z.string().describe("Idea or decision to discuss"),
+          format: z
+            .enum([
+              "scrum",
+              "critique",
+              "premortem",
+              "war_room",
+              "retro",
+              "design_review",
+              "postmortem_theater",
+            ])
+            .optional()
+            .describe("Discussion format"),
+          context: z.string().optional().describe("Optional background"),
+          roles: z
+            .string()
+            .optional()
+            .describe(
+              "Optional comma-separated flags, e.g. UI,FE,BE,SEC (ignored for postmortem_theater)"
+            ),
+        },
+      },
+      ({ topic, format, context, roles }) => ({
+        messages: [
+          {
+            role: "user" as const,
+            content: {
+              type: "text" as const,
+              text: renderDiscussBrief({
+                topic: topic || "Discuss the current idea",
+                format: format ?? "scrum",
+                context,
+                roles,
+              }),
+            },
+          },
+        ],
+      })
+    );
+  }
+
+  for (const name of [
+    "workforce/postmortem",
+    "workforce/postmortem_theater",
+  ] as const) {
+    server.registerPrompt(
+      name,
+      {
+        title: "Postmortem theater",
+        description:
+          "Full-cast postmortem: every specialty owns exactly one corrective action. Topic = the failure story.",
+        argsSchema: {
+          topic: z
+            .string()
+            .describe("Failure story — what broke, when, blast radius"),
+          context: z.string().optional().describe("Optional background"),
+        },
+      },
+      ({ topic, context }) => ({
+        messages: [
+          {
+            role: "user" as const,
+            content: {
+              type: "text" as const,
+              text: renderDiscussBrief({
+                topic: topic || "Postmortem the recent failure",
+                format: "postmortem_theater",
+                context,
+              }),
+            },
+          },
+        ],
+      })
+    );
+  }
+
+  for (const name of ["workforce/delegate", "workforce/plan_work"] as const) {
+    server.registerPrompt(
+      name,
+      {
+        title: "Delegate across specialties",
+        description:
+          "Break work into specialty-owned slices with order, acceptance, and workforce/FLAG invoke hints.",
+        argsSchema: {
+          goal: z.string().describe("Outcome to deliver"),
+          context: z.string().optional().describe("Optional background"),
+          constraints: z
+            .string()
+            .optional()
+            .describe("Deadline, stack, compliance, scope cuts"),
+          roles: z
+            .string()
+            .optional()
+            .describe("Optional specialty subset"),
+        },
+      },
+      ({ goal, context, constraints, roles }) => ({
+        messages: [
+          {
+            role: "user" as const,
+            content: {
+              type: "text" as const,
+              text: renderDelegateBrief({
+                goal: goal || "Plan specialty ownership for this work",
+                context,
+                constraints,
+                roles,
+              }),
+            },
+          },
+        ],
+      })
+    );
+  }
 
   const registeredPrompts = new Set<string>();
 

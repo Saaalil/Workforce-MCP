@@ -106,6 +106,18 @@ export const ROLE_ALIASES: Record<RoleId, readonly string[]> = {
     "testing",
     "sdet",
   ],
+  manager: [
+    "mgr",
+    "manager",
+    "em",
+    "eng_manager",
+    "engineering_manager",
+    "delivery",
+    "delivery_lead",
+    "pm_eng",
+    "scrum_master",
+    "delegate",
+  ],
 };
 
 /** Prefer these short flags in catalog / docs */
@@ -123,6 +135,7 @@ export const PRIMARY_SHORT_FLAGS: Record<RoleId, string> = {
   monitoring: "MON",
   security: "SEC",
   qa: "QA",
+  manager: "MGR",
 };
 
 function normalizeRoleToken(raw: string): string {
@@ -175,8 +188,8 @@ export function allAliasTokens(): string[] {
 /** Zod-friendly description listing short + full */
 export function roleArgDescription(): string {
   return (
-    "Specialist context to load — short flag or full id. Examples: DE, UI, FE, BE, DS, ML, AI, ARCH, OPS, SRE, MON, SEC, QA " +
-    "or data_engineer, ui_designer, frontend, backend, ops, sre, monitoring, security, qa. " +
-    "Also accepts workforce-DE / workforce-UI style strings. This loads agent context for the work — it does not hire people."
+    "Specialist context to load — short flag or full id. Examples: DE, UI, FE, BE, DS, ML, AI, ARCH, OPS, SRE, MON, SEC, QA, MGR " +
+    "or data_engineer, ui_designer, frontend, backend, ops, sre, monitoring, security, qa, manager. " +
+    "Also accepts workforce-DE / workforce/UI / workforce/MGR style strings. This loads agent context for the work — it does not hire people."
   );
 }

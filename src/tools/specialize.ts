@@ -69,7 +69,7 @@ export function registerSpecialize(server: McpServer): void {
         "The agent must investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and stop until approved (unless the change is trivially small). " +
         "Use when the user says workforce/UI, workforce/DE, DE, Backend, SRE, Ops, etc. " +
         "This is NOT hiring people — it equips the agent to do that specialty of work at full potential. " +
-        "Short flags: DE UI FE BE DS ML AI ARCH OPS SRE MON SEC QA.",
+        "Short flags: DE UI FE BE DS ML AI ARCH OPS SRE MON SEC QA MGR. Orchestration: workforce_discuss, workforce_delegate.",
       inputSchema: INPUT,
       annotations: {
         readOnlyHint: true,

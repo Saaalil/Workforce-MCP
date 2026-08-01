@@ -16,7 +16,9 @@ You: call MCP prompt "workforce/DE" for the order pipeline
   → agent works AS a data engineer on that task
 ```
 
-Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`, …
+Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`, `MGR`, …
+
+**Orchestration flow:** discuss the idea across specialties → delegate who owns what → execute **one** specialty at a time (`workforce/UI`, then handoff, …).
 
 ## Install (Cursor)
 
@@ -67,6 +69,7 @@ Local clone:
 | **MON** | `monitoring` | OTel / dashboards / alerts |
 | **SEC** | `security` | Threat model / authz / supply chain |
 | **QA** | `qa` | Test strategy / release gates |
+| **MGR** | `manager` | Delegate slices / sequence specialties |
 
 Also accepts: `workforce/DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`, etc.
 
@@ -79,6 +82,8 @@ Also accepts: `workforce/DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`,
 | `workforce_list_roles` | Catalog of flags + specialties |
 | `workforce_consult` | Mid-task check against a specialty’s bars |
 | `workforce_handoff` | Switch context (e.g. ARCH→FE, DE→AI) |
+| `workforce_discuss` | Multi-specialty meeting (scrum / critique / premortem / war_room / retro / design_review / **postmortem_theater**) |
+| `workforce_delegate` | Manager ownership plan — who owns which slice, in what order |
 
 Default **mode=`ask`**: investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and **stop** until approved (unless the change is trivially small).
 
@@ -87,8 +92,28 @@ Default **mode=`ask`**: investigate the repo, then reply with Goal / Blocking qu
 - `workforce/UI` — design the marketing landing page
 - `workforce/DE` — design the orders gold mart
 - `workforce_as` with role `SRE` — define SLOs for checkout
+- `workforce/discuss` — scrum the “express checkout” idea across specialties
+- `workforce/discuss` with format `postmortem_theater` — full cast; each specialty owns one corrective action
+- `workforce/delegate` — break “express checkout” into specialty-owned slices
+- `workforce/MGR` — stay in manager mode and sequence the work
 - Plain language also works: “Load DE context and design the orders gold mart”
 - `Switch context OPS → SRE after the golden path is ready`
+
+## How Workforce differs from skill directories (e.g. skills.sh)
+
+[skills.sh](https://www.skills.sh/) is a **marketplace of discrete skills** you install one-by-one (`npx skills add …`) — procedural snippets for agents (frontend-design, tdd, azure-*, etc.). That model wins at breadth and remixing many tiny capabilities.
+
+Workforce is a different bet:
+
+| | Skill directories | Workforce |
+|--|-----------------|-----------|
+| Unit | One skill file / procedure | One **specialty** with identity, stack defaults, quality bars, anti-patterns, handoffs |
+| How you use it | Install many skills into the agent | One MCP — call `workforce/DE`, discuss, delegate |
+| Coordination | You pick which skills to stack | **Discuss → delegate → one specialty at a time → handoff** |
+| Failure work | Separate debugging / review skills | **Postmortem theater**: every specialty owns one corrective action |
+| Intake | Often “just do it” | Contractor **Goal / Blocking questions / Assumptions / Plan** before high blast-radius work |
+
+**Be better, not broader:** stay opinionated on orchestration and bars; don’t become another skill dump. Complement skills.sh (use a skill for a niche procedure) while Workforce owns **who speaks, who owns the slice, and when to switch**.
 
 ## Develop
 
