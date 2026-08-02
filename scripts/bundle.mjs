@@ -7,10 +7,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outfile = join(root, "dist", "index.js");
 
 /**
- * Bundle a stdio-only MCP server into one file.
- * Keeps Express/HTTP trees out of the *published* dependency list
- * (they stay inside the bundle only if statically reachable — we import
- * stdio paths only, so supply-chain scanners see zero runtime deps).
+ * Bundle OUR code only. Leave @modelcontextprotocol/sdk + zod external so
+ * AJV's `new Function` (schema compile) is NOT inside our published file —
+ * Socket "Uses eval" must not attach to @saaalil/workforce-mcp itself.
  */
 await esbuild.build({
   entryPoints: [join(root, "src", "index.ts")],
@@ -22,7 +21,7 @@ await esbuild.build({
   banner: {
     js: "#!/usr/bin/env node\n",
   },
-  // Bundle MCP SDK + zod; Node builtins stay external (platform: node).
+  packages: "external",
   logLevel: "info",
   treeShaking: true,
   minify: false,
@@ -30,7 +29,6 @@ await esbuild.build({
   legalComments: "none",
 });
 
-// Ensure the shebang survives and the file is executable on Unix.
 let out = readFileSync(outfile, "utf8");
 if (!out.startsWith("#!/usr/bin/env node")) {
   out = `#!/usr/bin/env node\n${out}`;
@@ -44,4 +42,20 @@ if (existsSync(outfile)) {
   }
 }
 
-console.log("Bundled stdio MCP server → dist/index.js");
+// Hard fail publish if malware-looking patterns land in OUR file.
+for (const pattern of [
+  /\bnew Function\b/,
+  /\beval\s*\(/,
+  /\bchild_process\b/,
+  /from\s+["']node:fs["']/,
+  /from\s+["']fs["']/,
+]) {
+  if (pattern.test(out)) {
+    console.error(
+      `SECURITY: forbidden pattern ${pattern} found in dist/index.js`
+    );
+    process.exit(1);
+  }
+}
+
+console.log("Bundled Workforce stdio entry → dist/index.js (SDK external)");

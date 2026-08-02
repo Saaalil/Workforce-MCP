@@ -2,42 +2,37 @@
 
 ## What Workforce is
 
-`@saaalil/workforce-mcp` is an **stdio MCP server**. It loads local markdown specialty packs and returns text briefs to the host agent (Cursor, Claude, etc.). It is **not** a browser extension, not a cloud service runtime, and **not malware**.
+`@saaalil/workforce-mcp` is an **stdio MCP server**. It injects specialist context (markdown packs) into the host agent. It is **not malware**.
 
-## Trust boundary
+## Trust boundary (our published `dist/index.js`)
 
-| Capability | Our published code |
-|------------|--------------------|
-| Network | **None** — no outbound HTTP from Workforce itself |
-| Shell / child_process | **None** |
-| `eval` / dynamic code | **None** |
-| Filesystem | **Read-only** role packs, constitution, and brand assets shipped inside the package |
+| Capability | Our code |
+|------------|----------|
+| Network | **None** — no outbound HTTP |
+| Shell / `child_process` | **None** |
+| `eval` / `new Function` | **None** in our file |
+| Filesystem | **None** at runtime — packs/icons are compile-time embedded |
 | Install scripts | **None** (`prepublishOnly` is publisher-side only) |
 
-Transport is **stdio only** (`StdioServerTransport`). We do not start an Express/HTTP server.
+Transport is **stdio only**. We do not start an Express/HTTP server.
 
-## Why Socket / scanners may still show alerts
+## Why Socket showed “Uses eval” on 1.4.1
 
-Older installs depended on `@modelcontextprotocol/sdk` as a runtime dependency. That SDK’s **HTTP/SSE** stack (Express, etc.) triggers generic Socket signals (`network access`, `shell access`, `eval` in transitive tools) even when a stdio-only consumer never loads those modules.
+v1.4.1 **bundled** `@modelcontextprotocol/sdk` into `dist/index.js`. That SDK uses **AJV**, which compiles JSON-schema validators with `new Function(...)`. Socket attributed that pattern to **our** package (malware-looking Package Alert).
 
-**From 1.4.1 onward** Workforce:
+**From 1.4.2:** we keep the official MCP SDK + `zod` as normal **dependencies** and bundle **only** Workforce code. Any AJV `new Function` signal stays on the known upstream packages (Dependency Alerts), not on `@saaalil/workforce-mcp`.
 
-1. **Bundles** the stdio server into a single `dist/index.js` (no runtime npm dependencies).
-2. **Removed** `gray-matter` / `js-yaml` (replaced with a tiny safe frontmatter parser — no `eval`).
-3. Ships only the bundle + role packs + docs — no `postinstall` hooks.
+Filesystem / URL Package Alerts are cleared the same way: content is embedded; we do not put website URLs into the runtime server metadata.
 
-### Residual scanner signals (false positives)
-
-The MCP SDK validates tool schemas with **AJV**, which compiles validators via `new Function(...)`. That can appear as “uses eval” when a scanner reads our **bundled** file. It is schema compilation inside a well-known library — not dynamic execution of untrusted strings, and not malware.
-
-Generic “dependency alerts” on *historical* versions (pre-1.4.1) that listed `@modelcontextprotocol/sdk` as a runtime dependency are expected (Express/HTTP trees the stdio path never starts). They are not evidence that Workforce exfiltrates data or runs a shell.
+Dependency alerts on `@modelcontextprotocol/sdk`’s HTTP/SSE stack may still appear — stdio consumers never start that stack.
 
 ## Verification
 
 ```bash
-npm pack --dry-run
+npm run build
+# must not contain: new Function, eval(, node:fs, child_process
 npm run smoke
-npm audit
+npm pack --dry-run
 ```
 
 Source: https://github.com/Saaalil/Workforce-MCP  

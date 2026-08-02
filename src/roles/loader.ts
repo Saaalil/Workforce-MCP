@@ -1,7 +1,5 @@
-import { readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
 import { parseFrontmatter } from "../lib/frontmatter.js";
-import { constitutionPath, rolePacksDir } from "../lib/paths.js";
+import { EMBEDDED_CONSTITUTION, EMBEDDED_PACKS } from "../generated/embedded.js";
 import {
   ROLE_IDS,
   RolePackFrontmatterSchema,
@@ -20,12 +18,9 @@ import {
   requireRoleId,
 } from "./aliases.js";
 
-const PACKS_DIR = rolePacksDir(import.meta.url);
-
 let cache: Map<RoleId, RolePack> | null = null;
 
-function loadPackFile(filePath: string): RolePack {
-  const raw = readFileSync(filePath, "utf8");
+function loadPackFromRaw(raw: string): RolePack {
   const { data, content } = parseFrontmatter(raw);
   const frontmatter = RolePackFrontmatterSchema.parse(data);
   const sections = parseSections(content);
@@ -46,9 +41,13 @@ function loadPackFile(filePath: string): RolePack {
 export function loadAllPacks(strict = true): Map<RoleId, RolePack> {
   if (cache) return cache;
   const map = new Map<RoleId, RolePack>();
-  const files = readdirSync(PACKS_DIR).filter((f) => f.endsWith(".md"));
-  for (const file of files) {
-    const pack = loadPackFile(join(PACKS_DIR, file));
+  for (const [id, raw] of Object.entries(EMBEDDED_PACKS)) {
+    const pack = loadPackFromRaw(raw);
+    if (pack.frontmatter.id !== id) {
+      throw new Error(
+        `Embedded pack key "${id}" does not match frontmatter id "${pack.frontmatter.id}"`
+      );
+    }
     map.set(pack.frontmatter.id, pack);
   }
   if (strict) {
@@ -91,7 +90,7 @@ export function listCatalog(): RoleCatalogEntry[] {
 }
 
 export function getConstitution(): string {
-  return readFileSync(constitutionPath(import.meta.url), "utf8").trim();
+  return EMBEDDED_CONSTITUTION;
 }
 
 export function clearPackCache(): void {

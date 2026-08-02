@@ -10,7 +10,7 @@ One MCP. When you need UI work, load **UI** context. Pipeline work → **DE**. R
 
 ## Security
 
-Stdio-only MCP. **No install scripts. No network from our code.** From **1.4.1** the published package has **zero runtime dependencies** (server is a single bundled `dist/index.js`) to avoid supply-chain false positives from HTTP stacks we never use. See [SECURITY.md](./SECURITY.md).
+Stdio-only MCP. **No install scripts. No network / shell / `eval` in our published file.** Packs are embedded at build time (no runtime `fs`). The official MCP SDK is a normal dependency so schema tooling stays upstream — see [SECURITY.md](./SECURITY.md).
 
 ## Mental model
 

@@ -4,7 +4,7 @@ import { ROLE_IDS, type RoleId } from "./types.js";
 import { getPack, loadAllPacks } from "./roles/loader.js";
 import { PRIMARY_SHORT_FLAGS, ROLE_ALIASES } from "./roles/aliases.js";
 import { renderSpecialistBrief } from "./lib/render-brief.js";
-import { WORKFORCE_ICONS, WORKFORCE_WEBSITE_URL } from "./lib/brand.js";
+import { WORKFORCE_ICONS } from "./lib/brand.js";
 import { registerListRoles } from "./tools/list-roles.js";
 import { registerSpecialize } from "./tools/specialize.js";
 import { registerConsult } from "./tools/consult.js";
@@ -73,10 +73,9 @@ export function createWorkforceServer(): McpServer {
   const server = new McpServer({
     name: "workforce-mcp",
     title: "Workforce",
-    version: "1.4.1",
+    version: "1.4.2",
     description:
       "Specialist context + pods (WEB/DP/AIP) + discuss/delegate for your agent.",
-    websiteUrl: WORKFORCE_WEBSITE_URL,
     icons: WORKFORCE_ICONS,
   });
 

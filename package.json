@@ -1,6 +1,6 @@
 {
   "name": "@saaalil/workforce-mcp",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Load specialist context and pods (WEB/DP/AIP) into your agent",
   "type": "module",
   "main": "dist/index.js",
@@ -9,21 +9,19 @@
   },
   "files": [
     "dist/index.js",
-    "dist/roles/packs",
-    "dist/constitution.md",
-    "dist/assets",
     "README.md",
     "LICENSE",
     "SECURITY.md"
   ],
   "scripts": {
-    "build": "node scripts/copy-assets.mjs && node scripts/bundle.mjs",
-    "typecheck": "tsc --noEmit",
+    "embed": "node scripts/embed-content.mjs",
+    "build": "npm run embed && node scripts/bundle.mjs",
+    "typecheck": "npm run embed && tsc --noEmit",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
-    "validate-packs": "tsx scripts/validate-packs.ts",
-    "smoke": "tsx scripts/smoke.ts",
-    "audit": "tsx scripts/deep-audit.ts",
+    "dev": "npm run embed && tsx src/index.ts",
+    "validate-packs": "npm run embed && tsx scripts/validate-packs.ts",
+    "smoke": "npm run embed && tsx scripts/smoke.ts",
+    "audit": "npm run embed && tsx scripts/deep-audit.ts",
     "prepublishOnly": "npm run validate-packs && npm run typecheck && npm run build && npm run smoke && npm run audit",
     "pack:check": "npm pack --dry-run"
   },
@@ -52,12 +50,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
     "@types/node": "^22.13.10",
     "esbuild": "^0.25.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2",
-    "zod": "^3.24.2"
+    "typescript": "^5.8.2"
   }
 }
