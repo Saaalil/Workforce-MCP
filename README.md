@@ -149,3 +149,13 @@ npm run smoke
 ## License
 
 MIT
+
+## Support
+
+Having install or connection issues? Reach out:
+
+- **X:** [@HiremathSalil](https://x.com/HiremathSalil)
+- **Email:** [salilhiremath2712@gmail.com](mailto:salilhiremath2712@gmail.com)
+- **GitHub issues:** https://github.com/Saaalil/Workforce-MCP/issues
+
+Docs site: https://workforce-website-psi.vercel.app/support

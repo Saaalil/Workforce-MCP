@@ -37,7 +37,11 @@
     "claude",
     "stdio"
   ],
-  "author": "Salil Hiremath",
+  "author": {
+    "name": "Salil Hiremath",
+    "email": "salilhiremath2712@gmail.com",
+    "url": "https://x.com/HiremathSalil"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

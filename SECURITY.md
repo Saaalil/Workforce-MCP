@@ -37,4 +37,6 @@ npm pack --dry-run
 
 Source: https://github.com/Saaalil/Workforce-MCP  
 npm: https://www.npmjs.com/package/@saaalil/workforce-mcp  
-Report issues: https://github.com/Saaalil/Workforce-MCP/issues
+Report issues: https://github.com/Saaalil/Workforce-MCP/issues  
+
+Maintainer contact: [@HiremathSalil](https://x.com/HiremathSalil) · salilhiremath2712@gmail.com
