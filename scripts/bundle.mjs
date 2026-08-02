@@ -18,9 +18,8 @@ await esbuild.build({
   target: "node20",
   format: "esm",
   outfile,
-  banner: {
-    js: "#!/usr/bin/env node\n",
-  },
+  // Shebang is normalized below — do not also put it in banner (entry
+  // already has #! and esbuild preserves it → double shebang breaks ESM).
   packages: "external",
   logLevel: "info",
   treeShaking: true,
@@ -29,11 +28,11 @@ await esbuild.build({
   legalComments: "none",
 });
 
-let out = readFileSync(outfile, "utf8");
-if (!out.startsWith("#!/usr/bin/env node")) {
-  out = `#!/usr/bin/env node\n${out}`;
-  writeFileSync(outfile, out);
-}
+// Exactly one shebang on line 1 (Node only strips the first line).
+let out = readFileSync(outfile, "utf8").replace(/^\uFEFF/, "");
+out = out.replace(/^(?:#!\/usr\/bin\/env node\r?\n)+/, "");
+out = `#!/usr/bin/env node\n${out}`;
+writeFileSync(outfile, out);
 if (existsSync(outfile)) {
   try {
     chmodSync(outfile, 0o755);

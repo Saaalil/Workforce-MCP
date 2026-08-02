@@ -1,6 +1,6 @@
 {
   "name": "@saaalil/workforce-mcp",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Load specialist context and pods (WEB/DP/AIP) into your agent",
   "type": "module",
   "main": "dist/index.js",
