@@ -1,7 +1,7 @@
 {
   "name": "@saaalil/workforce-mcp",
-  "version": "1.3.0",
-  "description": "Load specialist context (UI, DE, SRE, …) into your agent for the work at hand — not a hiring tool",
+  "version": "1.4.0",
+  "description": "Load specialist context and pods (WEB/DP/AIP) into your agent — not a hiring tool",
   "type": "module",
   "main": "dist/index.js",
   "bin": {

@@ -103,7 +103,8 @@ for (const id of ROLE_IDS) {
   }
 }
 
-// Orchestration prompts (mirror server.ts discuss/delegate registration)
+// Orchestration + pod prompts (mirror server.ts)
+import { POD_IDS, PODS } from "../src/pods/registry.ts";
 for (const name of [
   "workforce/discuss",
   "workforce/scrum",
@@ -113,6 +114,12 @@ for (const name of [
   "workforce/postmortem_theater",
 ] as const) {
   registeredPrompts.add(name.toLowerCase());
+}
+for (const podId of POD_IDS) {
+  const pod = PODS[podId];
+  for (const a of [pod.flag, pod.id, ...pod.aliases]) {
+    registeredPrompts.add(`workforce/${a}`.toLowerCase());
+  }
 }
 
 console.log("\n--- Prompt registration ---");
@@ -146,6 +153,9 @@ const mustHave = [
   "workforce/MGR",
   "workforce/discuss",
   "workforce/postmortem",
+  "workforce/WEB",
+  "workforce/DP",
+  "workforce/AIP",
 ];
 for (const p of mustHave) {
   if (!registeredPrompts.has(p.toLowerCase())) fail(`missing critical prompt ${p}`);

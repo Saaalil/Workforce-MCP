@@ -2,6 +2,7 @@ import type { RoleId, RolePack } from "../types.js";
 import { ROLE_IDS } from "../types.js";
 import { PRIMARY_SHORT_FLAGS } from "../roles/aliases.js";
 import { getPack, getPackByInput } from "../roles/loader.js";
+import { PODS, requirePodId } from "../pods/registry.js";
 
 export type DiscussFormat =
   | "scrum"
@@ -348,3 +349,109 @@ export function renderDelegateBrief(opts: {
 
   return parts.join("\n");
 }
+
+/**
+ * Pod brief — fixed roster preset: discuss-lite members → delegate → first FLAG.
+ */
+export function renderPodBrief(opts: {
+  pod: string;
+  goal: string;
+  context?: string;
+  constraints?: string;
+}): string {
+  const podId = requirePodId(opts.pod);
+  const pod = PODS[podId];
+  const parts: string[] = [];
+
+  parts.push(`# Workforce Pod — ${pod.flag} · ${pod.title}`);
+  parts.push("");
+  parts.push(
+    "> A **pod** is a roster preset, not a merged mega-specialty. Do **not** implement as UI+FE+BE at once. Discuss → fill the delegation table → call **one** `workforce/FLAG`."
+  );
+  parts.push("");
+  parts.push(`**Pod:** \`${pod.flag}\` (\`${pod.id}\`)`);
+  parts.push(`**Intent:** ${pod.one_liner}`);
+  parts.push(`**When:** ${pod.when}`);
+  parts.push(`**Default sequence:** ${pod.default_sequence}`);
+  parts.push(`**Goal:** ${opts.goal}`);
+  if (opts.context) parts.push(`**Context:** ${opts.context}`);
+  if (opts.constraints) parts.push(`**Constraints:** ${opts.constraints}`);
+  parts.push(
+    `**Members:** ${pod.members.map((id) => PRIMARY_SHORT_FLAGS[id]).join(", ")}`
+  );
+  parts.push("");
+  parts.push("## Facilitator rules");
+  parts.push("");
+  parts.push("1. Synthesize each member specialty’s POV below.");
+  parts.push(
+    "2. Fill the **Pod delegation table** — one primary owner per slice, with acceptance."
+  );
+  parts.push(
+    "3. Name the **first** `workforce/FLAG` only. Stop until the user approves."
+  );
+  parts.push(
+    "4. High blast radius → Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan — then stop."
+  );
+  parts.push(
+    "5. After the first specialty finishes, `workforce_handoff` to the next member — do not silent-switch."
+  );
+  parts.push("");
+  parts.push("## Member voices");
+  parts.push("");
+
+  for (const id of pod.members) {
+    const pack = getPack(id);
+    const flag = PRIMARY_SHORT_FLAGS[id];
+    const fm = pack.frontmatter;
+    const challenges = firstBullets(section(pack, "Anti-patterns refused"), 2);
+    const bars = firstBullets(section(pack, "Hard quality bars"), 2);
+    const asks = pack.questions.slice(0, 2);
+
+    parts.push(`### ${flag} — ${fm.title}`);
+    parts.push("");
+    parts.push(`**Stance:** ${fm.one_liner}`);
+    parts.push(`**Owns:** ${fm.owns.join(", ")}`);
+    parts.push("");
+    parts.push("**Challenges & risks in this pod:**");
+    parts.push("");
+    for (const c of challenges) parts.push(`- ${c}`);
+    if (bars.length) {
+      parts.push("");
+      parts.push("**Quality bars:**");
+      parts.push("");
+      for (const b of bars) parts.push(`- ${b}`);
+    }
+    parts.push("");
+    parts.push("**Would ask before owning a slice:**");
+    parts.push("");
+    asks.forEach((q, i) => parts.push(`${i + 1}. ${q}`));
+    parts.push("");
+    parts.push(`**Invoke:** \`workforce/${flag}\``);
+    parts.push("");
+  }
+
+  parts.push("## Pod delegation table (fill)");
+  parts.push("");
+  parts.push("| Order | Flag | Slice | Acceptance | Depends on | Invoke |");
+  parts.push("|------:|------|-------|------------|------------|--------|");
+  pod.members.forEach((_, i) => {
+    const flag = PRIMARY_SHORT_FLAGS[pod.members[i]];
+    parts.push(
+      `| ${i + 1} | **${flag}** | … | … | ${i === 0 ? "—" : "prior slice"} | \`workforce/${flag}\` |`
+    );
+  });
+  parts.push("");
+  parts.push("## Synthesis");
+  parts.push("");
+  parts.push("- **MVP cut (in / out):**");
+  parts.push(`- **Recommended sequence:** ${pod.default_sequence}`);
+  parts.push("- **First call now:** `workforce/…`");
+  parts.push("");
+  parts.push("---");
+  parts.push(
+    `Pod \`${pod.flag}\` complete → execute one member specialty. Tip: \`workforce_list_pods\` to see all pods. Specialty \`AI\` ≠ pod \`AIP\`.`
+  );
+
+  return parts.join("\n");
+}
+

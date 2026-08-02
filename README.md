@@ -18,7 +18,8 @@ You: call MCP prompt "workforce/DE" for the order pipeline
 
 Same for `UI`, `FE`, `BE`, `ML`, `AI`, `OPS`, `SRE`, `MON`, `SEC`, `QA`, `ARCH`, `MGR`, …
 
-**Orchestration flow:** discuss the idea across specialties → delegate who owns what → execute **one** specialty at a time (`workforce/UI`, then handoff, …).
+**Orchestration flow:** discuss → delegate → **one** specialty at a time.  
+**Pods:** `workforce/WEB` (UI+FE+BE), `workforce/DP` (DE+DS), `workforce/AIP` (AI+ML+DS+DE) — roster presets, not mega-skills. Specialty `AI` ≠ pod `AIP`.
 
 ## Install (Cursor)
 
@@ -73,6 +74,18 @@ Local clone:
 
 Also accepts: `workforce/DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`, etc.
 
+## Pods (roster presets)
+
+| Pod | Invoke | Members | Use when |
+|-----|--------|---------|----------|
+| **WEB** | `workforce/WEB` | UI, FE, BE | User-facing product surface |
+| **DP** | `workforce/DP` | DS, DE | Data products / metrics / marts |
+| **AIP** | `workforce/AIP` | DS, DE, ML, AI | Intelligence stack (RAG/agents/models) |
+| **PLAT** | `workforce/PLAT` | OPS, SRE, MON | Delivery + reliability + telemetry |
+| **SHIP** | `workforce/SHIP` | SEC, BE, FE, QA | Release hardening / gates |
+
+Pods run member POVs + a delegation table, then you execute **one** `workforce/FLAG`. See `docs/ADR-0001-pods.md`.
+
 ## Tools
 
 | Tool | Purpose |
@@ -80,9 +93,11 @@ Also accepts: `workforce/DE`, `workforce-UI`, `devops`, `o11y`, `data engineer`,
 | `workforce_as` | **Primary** — load full specialist context for the work |
 | `workforce_specialize` | Alias of `workforce_as` |
 | `workforce_list_roles` | Catalog of flags + specialties |
+| `workforce_list_pods` | Catalog of pods (WEB / DP / AIP / …) |
+| `workforce_pod` | Run a pod brief (roster → delegate → first FLAG) |
 | `workforce_consult` | Mid-task check against a specialty’s bars |
 | `workforce_handoff` | Switch context (e.g. ARCH→FE, DE→AI) |
-| `workforce_discuss` | Multi-specialty meeting (scrum / critique / premortem / war_room / retro / design_review / **postmortem_theater**) |
+| `workforce_discuss` | Multi-specialty meeting (incl. **postmortem_theater**) |
 | `workforce_delegate` | Manager ownership plan — who owns which slice, in what order |
 
 Default **mode=`ask`**: investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and **stop** until approved (unless the change is trivially small).
@@ -90,6 +105,9 @@ Default **mode=`ask`**: investigate the repo, then reply with Goal / Blocking qu
 ## Example prompts to your agent
 
 - `workforce/UI` — design the marketing landing page
+- `workforce/WEB` — plan a web feature across UI → FE/BE
+- `workforce/DP` — plan a data mart with DS + DE
+- `workforce/AIP` — plan RAG/agent work (not the same as `workforce/AI` alone)
 - `workforce/DE` — design the orders gold mart
 - `workforce_as` with role `SRE` — define SLOs for checkout
 - `workforce/discuss` — scrum the “express checkout” idea across specialties

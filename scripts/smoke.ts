@@ -16,7 +16,9 @@ import {
 import {
   renderDelegateBrief,
   renderDiscussBrief,
+  renderPodBrief,
 } from "../src/lib/orchestrate.ts";
+import { resolvePodId, listPods } from "../src/pods/registry.ts";
 
 process.chdir(join(dirname(fileURLToPath(import.meta.url)), ".."));
 clearPackCache();
@@ -198,6 +200,43 @@ if (!delegate.includes("Delegation") || !delegate.includes("workforce/")) {
   fail("delegate brief incomplete");
 } else {
   ok("delegate plan");
+}
+
+if (!resolvePodId("WEB") || resolvePodId("WEB") !== "web") {
+  fail("pod WEB resolve failed");
+} else {
+  ok("pod resolve WEB");
+}
+if (resolvePodId("AI") !== null) {
+  fail("specialty AI must not resolve as a pod (use AIP)");
+} else {
+  ok("pod AI collision avoided");
+}
+const webPod = renderPodBrief({
+  pod: "web",
+  goal: "Ship marketing landing + API",
+});
+if (
+  !webPod.includes("Workforce Pod") ||
+  !webPod.includes("### UI") ||
+  !webPod.includes("### FE") ||
+  !webPod.includes("### BE") ||
+  !webPod.includes("Pod delegation table")
+) {
+  fail("web pod brief incomplete");
+} else {
+  ok("pod WEB brief");
+}
+const aip = renderPodBrief({ pod: "AIP", goal: "Ship RAG checkout help" });
+if (!aip.includes("### AI") || !aip.includes("### DE") || !aip.includes("AIP")) {
+  fail("AIP pod brief incomplete");
+} else {
+  ok("pod AIP brief");
+}
+if (listPods().length < 5) {
+  fail("expected at least 5 pods");
+} else {
+  ok(`pods catalog n=${listPods().length}`);
 }
 
 for (const id of ROLE_IDS) {

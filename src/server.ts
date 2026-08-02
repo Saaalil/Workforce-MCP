@@ -10,10 +10,13 @@ import { registerSpecialize } from "./tools/specialize.js";
 import { registerConsult } from "./tools/consult.js";
 import { registerHandoff } from "./tools/handoff.js";
 import { registerDiscuss, registerDelegate } from "./tools/discuss.js";
+import { registerListPods, registerPod } from "./tools/pod.js";
 import {
   renderDelegateBrief,
   renderDiscussBrief,
+  renderPodBrief,
 } from "./lib/orchestrate.js";
+import { POD_IDS, PODS } from "./pods/registry.js";
 
 function registerSpecialistPrompt(
   server: McpServer,
@@ -70,9 +73,9 @@ export function createWorkforceServer(): McpServer {
   const server = new McpServer({
     name: "workforce-mcp",
     title: "Workforce",
-    version: "1.3.0",
+    version: "1.4.0",
     description:
-      "Specialist context for your agent — UI, DE, SRE, MGR discuss/delegate, and more. Not a hiring tool.",
+      "Specialist context + pods (WEB/DP/AIP) + discuss/delegate. Not a hiring tool.",
     websiteUrl: WORKFORCE_WEBSITE_URL,
     icons: WORKFORCE_ICONS,
   });
@@ -83,6 +86,8 @@ export function createWorkforceServer(): McpServer {
   registerHandoff(server);
   registerDiscuss(server);
   registerDelegate(server);
+  registerListPods(server);
+  registerPod(server);
 
   // Orchestration prompts (chips alongside specialty prompts)
   for (const name of ["workforce/discuss", "workforce/scrum"] as const) {
@@ -208,7 +213,54 @@ export function createWorkforceServer(): McpServer {
     );
   }
 
+  // Pod prompts (roster presets — register before specialties to claim web/dp/aip/…)
   const registeredPrompts = new Set<string>();
+
+  for (const podId of POD_IDS) {
+    const pod = PODS[podId];
+    const promptNames = [
+      `workforce/${pod.flag}`,
+      `workforce/${pod.flag.toLowerCase()}`,
+      `workforce/${pod.id}`,
+      ...pod.aliases.map((a) => `workforce/${a}`),
+    ];
+    for (const name of promptNames) {
+      const key = name.toLowerCase();
+      if (registeredPrompts.has(key)) continue;
+      registeredPrompts.add(key);
+      server.registerPrompt(
+        name,
+        {
+          title: `${pod.flag} — ${pod.title}`,
+          description: `${pod.one_liner} Pod = discuss members → delegate → one specialty. Not hiring.`,
+          argsSchema: {
+            goal: z.string().describe("Outcome for this pod to plan"),
+            context: z.string().optional().describe("Optional background"),
+            constraints: z
+              .string()
+              .optional()
+              .describe("Deadline, stack, compliance, scope cuts"),
+          },
+        },
+        ({ goal, context, constraints }) => ({
+          messages: [
+            {
+              role: "user" as const,
+              content: {
+                type: "text" as const,
+                text: renderPodBrief({
+                  pod: pod.id,
+                  goal: goal || `Plan work for the ${pod.flag} pod`,
+                  context,
+                  constraints,
+                }),
+              },
+            },
+          ],
+        })
+      );
+    }
+  }
 
   for (const id of ROLE_IDS) {
     const pack = getPack(id);
