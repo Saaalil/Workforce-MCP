@@ -29,7 +29,7 @@ function registerSpecialistPrompt(
     promptName,
     {
       title: `${flag} — ${pack.frontmatter.title} context`,
-      description: `Load ${pack.frontmatter.title} (${flag}) specialist context: ${pack.frontmatter.one_liner}. Agent investigates, then Goal / Blocking questions / Assumptions / Plan and stops until approved. Not hiring.`,
+      description: `Load ${pack.frontmatter.title} (${flag}) specialist context: ${pack.frontmatter.one_liner}. Agent investigates, then Goal / Blocking questions / Assumptions / Plan and stops until approved.`,
       argsSchema: {
         task: z.string().describe("The work to do under this specialist context"),
         context: z
@@ -73,9 +73,9 @@ export function createWorkforceServer(): McpServer {
   const server = new McpServer({
     name: "workforce-mcp",
     title: "Workforce",
-    version: "1.4.0",
+    version: "1.4.1",
     description:
-      "Specialist context + pods (WEB/DP/AIP) + discuss/delegate. Not a hiring tool.",
+      "Specialist context + pods (WEB/DP/AIP) + discuss/delegate for your agent.",
     websiteUrl: WORKFORCE_WEBSITE_URL,
     icons: WORKFORCE_ICONS,
   });
@@ -232,7 +232,7 @@ export function createWorkforceServer(): McpServer {
         name,
         {
           title: `${pod.flag} — ${pod.title}`,
-          description: `${pod.one_liner} Pod = discuss members → delegate → one specialty. Not hiring.`,
+          description: `${pod.one_liner} Pod = discuss members → delegate → one specialty.`,
           argsSchema: {
             goal: z.string().describe("Outcome for this pod to plan"),
             context: z.string().optional().describe("Optional background"),

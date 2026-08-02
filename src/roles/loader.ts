@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import matter from "gray-matter";
+import { join } from "node:path";
+import { parseFrontmatter } from "../lib/frontmatter.js";
+import { constitutionPath, rolePacksDir } from "../lib/paths.js";
 import {
   ROLE_IDS,
   RolePackFrontmatterSchema,
@@ -20,14 +20,13 @@ import {
   requireRoleId,
 } from "./aliases.js";
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const PACKS_DIR = join(HERE, "packs");
+const PACKS_DIR = rolePacksDir(import.meta.url);
 
 let cache: Map<RoleId, RolePack> | null = null;
 
 function loadPackFile(filePath: string): RolePack {
   const raw = readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   const frontmatter = RolePackFrontmatterSchema.parse(data);
   const sections = parseSections(content);
   const questions = extractQuestions(
@@ -92,7 +91,7 @@ export function listCatalog(): RoleCatalogEntry[] {
 }
 
 export function getConstitution(): string {
-  return readFileSync(join(HERE, "..", "constitution.md"), "utf8").trim();
+  return readFileSync(constitutionPath(import.meta.url), "utf8").trim();
 }
 
 export function clearPackCache(): void {

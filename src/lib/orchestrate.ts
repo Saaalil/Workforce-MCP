@@ -94,7 +94,7 @@ export function renderDiscussBrief(opts: {
   parts.push(`# Workforce Discuss — ${titles[format]}`);
   parts.push("");
   parts.push(
-    "> Not a hiring meeting. Specialties speak as **context lenses**. After this, pick one specialty to execute — do not implement everything at once."
+    "> Specialties speak as **context lenses**. After this, pick one specialty to execute — do not implement everything at once."
   );
   parts.push("");
   parts.push(`**Topic:** ${opts.topic}`);
@@ -291,7 +291,7 @@ export function renderDelegateBrief(opts: {
   parts.push("# Workforce Delegate — specialty ownership plan");
   parts.push("");
   parts.push(
-    "> Manager orchestration: assign slices to specialties. Not hiring. Execute **one** specialty at a time after approval."
+    "> Manager orchestration: assign slices to specialties. Execute **one** specialty at a time after approval."
   );
   parts.push("");
   parts.push(`**Goal:** ${opts.goal}`);

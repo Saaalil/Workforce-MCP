@@ -10,7 +10,7 @@ export function registerListRoles(server: McpServer): void {
       title: "List Specialist Contexts",
       description:
         "List all Workforce specialist contexts with short flags (DE, UI, SRE, …), full ids, aliases, and what each specialty owns. " +
-        "Use before workforce_as if unsure which specialist context fits the work. This is a context catalog — not a hiring roster.",
+        "Use before workforce_as if unsure which specialist context fits the work.",
       inputSchema: {
         response_format: z
           .enum(["markdown", "json"])
@@ -42,7 +42,6 @@ export function registerListRoles(server: McpServer): void {
         "# Workforce Specialist Contexts",
         "",
         "One MCP that loads deep specialist context into your agent for the work at hand.",
-        "**Not a hiring tool** — no people, no recruiting. Just production-grade specialty context (UI, DE, SRE, …).",
         "",
         "| Flag | Invoke | Specialty context |",
         "|------|--------|-------------------|",

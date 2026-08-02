@@ -185,7 +185,7 @@ for (const a of ambiguous) {
   console.log(`  ${a} -> ${resolveRoleId(a)}`);
 }
 
-// Spot-check brief content for hire language / empty sections
+// Spot-check brief content for leftover hire language / empty sections
 import { renderSpecialistBrief } from "../src/lib/render-brief.ts";
 for (const id of ROLE_IDS) {
   const brief = renderSpecialistBrief({
@@ -193,8 +193,8 @@ for (const id of ROLE_IDS) {
     task: `Verify ${id} specialty context depth`,
     mode: "execute",
   });
-  if (/hire a|hiring people|recruit/i.test(brief) && !/not.*hir/i.test(brief)) {
-    fail(`${id} brief may still sound like hiring`);
+  if (/\bhire\b|\bhiring\b|\brecruit/i.test(brief)) {
+    fail(`${id} brief still contains hiring language`);
   }
   if (brief.length < 3000) fail(`${id} execute brief thin: ${brief.length}`);
   for (const heading of [

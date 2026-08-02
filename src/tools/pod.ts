@@ -36,7 +36,7 @@ export function registerListPods(server: McpServer): void {
       const text = [
         "# Workforce Pods",
         "",
-        "Pods are **roster presets** (not hiring, not mega-skills). Call a pod → member POVs → delegation → **one** specialty.",
+        "Pods are **roster presets** (not mega-skills). Call a pod → member POVs → delegation → **one** specialty.",
         "",
         "| Flag | Invoke | Members | When |",
         "|------|--------|---------|------|",

@@ -34,7 +34,7 @@ Users often need a *fixed specialty band* (web app, data product, LLM stack) wit
 ## Consequences
 
 - **Good:** Faster activation; clear bands; still sequential.
-- **Good:** Website can catalog pods without implying hiring.
+- **Good:** Website can catalog pods as named team presets.
 - **Bad if misused:** Agents may try to code as all members at once — brief must forbid this.
 - **Rejected alternatives:**
   - Merging all member pack bodies into one prompt (context pollution).

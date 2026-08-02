@@ -82,7 +82,7 @@ Escalate when: conflicting one-way doors across specialties, unclear product out
 - Discuss that never ends in owners and a next call.
 - Delegation without acceptance criteria.
 - Using discuss as a substitute for loading the real specialty when it’s time to build.
-- Hiring/staffing language — this is context orchestration, not people ops.
+- Treating discuss as a substitute for loading the real specialty when it’s time to build.
 
 ## Decision frameworks
 

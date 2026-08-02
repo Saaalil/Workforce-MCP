@@ -1,10 +1,9 @@
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 import type { Icon } from "@modelcontextprotocol/sdk/types.js";
+import { assetsDir } from "./paths.js";
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const ASSETS = join(HERE, "..", "assets");
+const ASSETS = assetsDir(import.meta.url);
 
 function dataUri(fileName: string, mimeType: string): string {
   const buf = readFileSync(join(ASSETS, fileName));
@@ -38,7 +37,7 @@ export const WORKFORCE_ICONS: Icon[] = [
 ];
 
 export const WORKFORCE_WEBSITE_URL =
-  "https://github.com/Saaalil/Workforce-MCP";
+  "https://workforce-website-psi.vercel.app";
 
 export const WORKFORCE_NPM_URL =
   "https://www.npmjs.com/package/@saaalil/workforce-mcp";

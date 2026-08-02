@@ -190,6 +190,6 @@ export function roleArgDescription(): string {
   return (
     "Specialist context to load — short flag or full id. Examples: DE, UI, FE, BE, DS, ML, AI, ARCH, OPS, SRE, MON, SEC, QA, MGR " +
     "or data_engineer, ui_designer, frontend, backend, ops, sre, monitoring, security, qa, manager. " +
-    "Also accepts workforce-DE / workforce/UI / workforce/MGR style strings. This loads agent context for the work — it does not hire people."
+    "Also accepts workforce-DE / workforce/UI / workforce/MGR style strings."
   );
 }

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import matter from "gray-matter";
+import { parseFrontmatter } from "../src/lib/frontmatter.ts";
 import {
   ROLE_IDS,
   RolePackFrontmatterSchema,
@@ -36,7 +36,7 @@ if (files.length !== ROLE_IDS.length) {
 
 for (const file of files) {
   const raw = readFileSync(join(packsDir, file), "utf8");
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   let frontmatter;
   try {
     frontmatter = RolePackFrontmatterSchema.parse(data);

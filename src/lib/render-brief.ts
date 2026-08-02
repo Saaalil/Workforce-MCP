@@ -28,7 +28,7 @@ function sectionOrEmpty(pack: RolePack, name: string): string {
 }
 
 /**
- * Full specialist context pack for the agent — NOT a hiring flow.
+ * Full specialist context pack for the agent.
  * Loads identity, discovery questions, stack, quality bars, and handoffs
  * so the agent can perform that specialty of work at full potential.
  */
@@ -50,7 +50,7 @@ export function renderSpecialistBrief(opts: {
   parts.push(`# Workforce Specialist Context: ${fm.title} (${flag})`);
   parts.push("");
   parts.push(
-    "> This is **not** a hiring flow. You are loading specialist context so the agent can do this work with full production-grade judgment, skills, and process."
+    "> Loading specialist context so the agent can do this work with full production-grade judgment, skills, and process."
   );
   parts.push("");
   parts.push(`**Specialist:** \`${fm.id}\` / flag \`${flag}\`  `);
@@ -173,9 +173,6 @@ export function renderSpecialistBrief(opts: {
   return parts.join("\n");
 }
 
-/** @deprecated Use renderSpecialistBrief */
-export const renderHireBrief = renderSpecialistBrief;
-
 export function renderConsultBrief(opts: {
   pack: RolePack;
   situation: string;
@@ -187,7 +184,7 @@ export function renderConsultBrief(opts: {
   return [
     `# Workforce Consult (specialist context): ${fm.title} (${flag})`,
     "",
-    "> Mid-work check against this specialty's quality bars — not a hiring step.",
+    "> Mid-work check against this specialty's quality bars.",
     "",
     `**Situation:** ${situation}`,
     goal ? `**Goal:** ${goal}` : "",

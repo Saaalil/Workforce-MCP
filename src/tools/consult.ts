@@ -11,7 +11,7 @@ export function registerConsult(server: McpServer): void {
     {
       title: "Consult Specialist Context",
       description:
-        "Mid-task check against an already-loaded specialty's quality bars and decision frameworks (short flag or full id). Not hiring — specialist judgment for a blocker or decision.",
+        "Mid-task check against an already-loaded specialty's quality bars and decision frameworks (short flag or full id).",
       inputSchema: {
         role: RoleInputSchema.describe(roleArgDescription()),
         situation: z

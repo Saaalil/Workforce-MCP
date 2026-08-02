@@ -32,10 +32,6 @@ export const RoleInputSchema = z
 
 export const WorkModeSchema = z.enum(["ask", "plan", "execute"]);
 export type WorkMode = z.infer<typeof WorkModeSchema>;
-/** @deprecated Use WorkModeSchema */
-export const HireModeSchema = WorkModeSchema;
-/** @deprecated Use WorkMode */
-export type HireMode = WorkMode;
 
 export const RolePackFrontmatterSchema = z.object({
   id: RoleIdSchema,

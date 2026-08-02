@@ -1,26 +1,30 @@
 {
   "name": "@saaalil/workforce-mcp",
-  "version": "1.4.0",
-  "description": "Load specialist context and pods (WEB/DP/AIP) into your agent — not a hiring tool",
+  "version": "1.4.1",
+  "description": "Load specialist context and pods (WEB/DP/AIP) into your agent",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "workforce-mcp": "dist/index.js"
   },
   "files": [
-    "dist",
-    "src/assets",
+    "dist/index.js",
+    "dist/roles/packs",
+    "dist/constitution.md",
+    "dist/assets",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "SECURITY.md"
   ],
   "scripts": {
-    "build": "tsc && node scripts/copy-assets.mjs",
+    "build": "node scripts/copy-assets.mjs && node scripts/bundle.mjs",
+    "typecheck": "tsc --noEmit",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "validate-packs": "tsx scripts/validate-packs.ts",
     "smoke": "tsx scripts/smoke.ts",
     "audit": "tsx scripts/deep-audit.ts",
-    "prepublishOnly": "npm run validate-packs && npm run build && npm run smoke && npm run audit",
+    "prepublishOnly": "npm run validate-packs && npm run typecheck && npm run build && npm run smoke && npm run audit",
     "pack:check": "npm pack --dry-run"
   },
   "engines": {
@@ -32,7 +36,8 @@
     "workforce",
     "ai-agents",
     "cursor",
-    "claude"
+    "claude",
+    "stdio"
   ],
   "author": "Salil Hiremath",
   "license": "MIT",
@@ -43,18 +48,16 @@
   "bugs": {
     "url": "https://github.com/Saaalil/Workforce-MCP/issues"
   },
-  "homepage": "https://github.com/Saaalil/Workforce-MCP#readme",
+  "homepage": "https://workforce-website-psi.vercel.app",
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "gray-matter": "^4.0.3",
-    "zod": "^3.24.2"
-  },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@types/node": "^22.13.10",
+    "esbuild": "^0.25.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
   }
 }

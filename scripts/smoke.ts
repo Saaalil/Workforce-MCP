@@ -33,11 +33,6 @@ function ok(msg: string): void {
 }
 
 const constitution = getConstitution();
-if (!constitution.includes("not** a hiring") && !constitution.includes("not a hiring")) {
-  fail("Constitution must clarify this is not hiring");
-} else {
-  ok("Constitution: not-hiring framing");
-}
 if (!constitution.includes("Before implementing") || !constitution.includes("Blocking questions")) {
   fail("Constitution must include contractor Before implementing protocol");
 } else {
@@ -69,9 +64,6 @@ for (const id of ROLE_IDS) {
     mode: "ask",
   });
 
-  if (!brief.includes("not** a hiring") && !brief.includes("not a hiring")) {
-    fail(`${id}: brief missing not-hiring framing`);
-  }
   if (!brief.includes("Required response format (before implementing)")) {
     fail(`${id}: ask mode missing contractor intake format`);
   }
@@ -84,8 +76,8 @@ for (const id of ROLE_IDS) {
   if (brief.includes("Ask the user these questions NOW")) {
     fail(`${id}: still uses old dump-questions framing`);
   }
-  if (brief.includes("Workforce Hire:")) {
-    fail(`${id}: still uses Hire branding`);
+  if (/\bhiring\b|\brecruit/i.test(brief) || brief.includes("Workforce Hire:")) {
+    fail(`${id}: brief still contains hiring language`);
   }
   for (const needle of distinctive[id] ?? []) {
     if (!brief.toLowerCase().includes(needle.toLowerCase())) {
@@ -237,6 +229,32 @@ if (listPods().length < 5) {
   fail("expected at least 5 pods");
 } else {
   ok(`pods catalog n=${listPods().length}`);
+}
+
+// Frontmatter parser (no gray-matter / js-yaml)
+import { parseFrontmatter } from "../src/lib/frontmatter.ts";
+const fm = parseFrontmatter(`---
+id: test_role
+title: Test
+seniority: staff
+one_liner: hello
+owns:
+  - a
+  - b
+does_not_own:
+  - c
+---
+# Body
+`);
+if (
+  fm.data.id !== "test_role" ||
+  !Array.isArray(fm.data.owns) ||
+  (fm.data.owns as string[])[0] !== "a" ||
+  !fm.content.includes("# Body")
+) {
+  fail("frontmatter parser failed");
+} else {
+  ok("safe frontmatter parser");
 }
 
 for (const id of ROLE_IDS) {

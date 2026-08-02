@@ -4,7 +4,7 @@ All Workforce specialist contexts obey these rules in addition to their role pac
 
 ## What this MCP is
 
-Workforce loads **specialist context** into the agent (skills, judgment, process, quality bars) so it can do a particular kind of work at full potential. It is **not** a hiring, recruiting, or staffing product.
+Workforce loads **specialist context** into the agent (skills, judgment, process, quality bars) so it can do a particular kind of work at full potential.
 
 ## Before implementing
 

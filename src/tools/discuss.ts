@@ -23,7 +23,7 @@ export function registerDiscuss(server: McpServer): void {
       title: "Multi-specialty discuss",
       description:
         "Run a multi-role discussion on an idea (scrum, critique, premortem, war room, retro, design review, or postmortem theater). " +
-        "Surfaces challenges from each specialty POV, then recommends a sequence — not hiring, not parallel implement-everything.",
+        "Surfaces challenges from each specialty POV, then recommends a sequence — do not implement everything in parallel.",
       inputSchema: {
         topic: z
           .string()

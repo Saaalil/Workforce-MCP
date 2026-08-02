@@ -55,10 +55,7 @@ async function handleSpecialize(args: {
   }
 }
 
-/**
- * Primary tool: load specialist context into the agent for a piece of work.
- * NOT a hiring tool — it injects skills, judgment, process, and quality bars.
- */
+/** Primary tool: load specialist context into the agent for a piece of work. */
 export function registerSpecialize(server: McpServer): void {
   server.registerTool(
     "workforce_as",
@@ -68,7 +65,6 @@ export function registerSpecialize(server: McpServer): void {
         "Load full specialist context into the agent for a task (skills, stack defaults, quality bars, anti-patterns, handoffs). " +
         "The agent must investigate the repo, then reply with Goal / Blocking questions (0–3 with defaults) / Assumptions / Plan and stop until approved (unless the change is trivially small). " +
         "Use when the user says workforce/UI, workforce/DE, DE, Backend, SRE, Ops, etc. " +
-        "This is NOT hiring people — it equips the agent to do that specialty of work at full potential. " +
         "Short flags: DE UI FE BE DS ML AI ARCH OPS SRE MON SEC QA MGR. Orchestration: workforce_discuss, workforce_delegate, workforce_pod (WEB/DP/AIP/PLAT/SHIP).",
       inputSchema: INPUT,
       annotations: {
@@ -81,13 +77,12 @@ export function registerSpecialize(server: McpServer): void {
     handleSpecialize
   );
 
-  // Alias for discoverability
   server.registerTool(
     "workforce_specialize",
     {
       title: "Load Specialist Context (alias)",
       description:
-        "Alias of workforce_as — load specialist context for the agent to perform specialized work. Not a hiring tool.",
+        "Alias of workforce_as — load specialist context for the agent to perform specialized work.",
       inputSchema: INPUT,
       annotations: {
         readOnlyHint: true,
@@ -99,6 +94,3 @@ export function registerSpecialize(server: McpServer): void {
     handleSpecialize
   );
 }
-
-/** @deprecated Prefer registerSpecialize / workforce_as */
-export const registerHire = registerSpecialize;

@@ -4,9 +4,13 @@
   <img src="src/assets/logo.png" alt="Workforce" width="96" height="96" />
 </p>
 
-**Specialist context for your agent — not a hiring tool.**
+**Specialist context for your agent.**
 
 One MCP. When you need UI work, load **UI** context. Pipeline work → **DE**. Reliability → **SRE**. Your agent gets full production-grade skills, discovery questions, stack defaults, quality bars, and handoffs for that specialty — without installing separate skill packs per project.
+
+## Security
+
+Stdio-only MCP. **No install scripts. No network from our code.** From **1.4.1** the published package has **zero runtime dependencies** (server is a single bundled `dist/index.js`) to avoid supply-chain false positives from HTTP stacks we never use. See [SECURITY.md](./SECURITY.md).
 
 ## Mental model
 
