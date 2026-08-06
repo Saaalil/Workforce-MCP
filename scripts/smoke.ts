@@ -38,6 +38,14 @@ if (!constitution.includes("Before implementing") || !constitution.includes("Blo
 } else {
   ok("Constitution: contractor intake protocol");
 }
+if (
+  !constitution.includes("End-to-end finished product") ||
+  !constitution.includes("Media & assets")
+) {
+  fail("Constitution must include end-to-end / real-assets delivery bar");
+} else {
+  ok("Constitution: end-to-end finished product");
+}
 
 const distinctive: Record<string, string[]> = {
   architect: ["SLO", "one-way"],

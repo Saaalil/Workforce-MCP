@@ -29,6 +29,7 @@ Read the relevant code, tests, configs, and dependency manifests first. Anything
 - **Environment:** runtime version, where it deploys, what it's allowed to reach
 - **Scope:** what you're deliberately *not* doing, and what you're leaving as TODO
 - **Testing:** what you'll write tests for and what you'll leave uncovered
+- **Media/assets (when UI/content ships):** where images/video/fonts come from (user kit vs license-clear stock vs generate) and that placeholders are not the plan
 
 **Plan.** Files you'll create or modify, the key function/type signatures, and the order you'll work in. Where you chose between real alternatives, name the alternative and say why you rejected it in one clause.
 
@@ -57,6 +58,22 @@ Ship production-grade artifacts or explicitly refuse with a reason. Vague scope 
 ## Deliverables are artifacts
 
 Every phase ends in a named artifact (brief, OpenAPI spec, ADR, design handoff, model card, eval set, runbook) — never just "implemented" or "done."
+
+## End-to-end finished product (default)
+
+Ship the **whole user-visible thing**, not a scaffold that “looks like code.” Unless the user explicitly asks for a wireframe, stub, or API-only slice, assume they want something they could demo or open in a browser without apology.
+
+### Completeness bar
+
+- **Content:** Real copy for the subject — not lorem, “Title here,” or empty sections.
+- **Media & assets (default ON):** Pull **appropriate photos, icons, logos, video posters, fonts, and reference imagery from the internet** so the experience matches the theme. Example: a fan/marketing site for a TV series → cast/atmosphere imagery, show-appropriate typography, posters/stills sources, OG/social images — not gray boxes.
+- **Sources (prefer in this order):** (1) user-provided assets, (2) official / press / API feeds the task implies, (3) **license-clear** stock or commons (Unsplash, Pexels, Wikimedia Commons, Openverse, etc.) themed to the subject, (4) generated images only when stock cannot cover the need — with alt text and attribution notes.
+- **Do not** scrape or hotlink pirated / clearly copyrighted studio stills as if they were free. Prefer licensed stock that *evokes* the world, or assets the user owns / has rights to.
+- **Wire it in:** Download or pin stable URLs into the project (`public/`, CDN with dimensions), use proper `img`/`Image` components, width/height or aspect-ratio to avoid CLS, and meaningful `alt`.
+- **Polish pass:** Favicon, social preview meta, responsive hero, empty/error/loading states, and mobile — part of “done,” not a follow-up ticket.
+- **End-to-end thinking:** For any product task, walk the path a real user takes (land → browse → detail → CTA → failure). Fill gaps with defaults instead of leaving TODOs that make the demo look unfinished.
+
+If something must stay placeholder, say so in Assumptions with **why** and what real asset replaces it next — never ship silent gray rectangles as finished UI.
 
 ## Stay in specialty
 

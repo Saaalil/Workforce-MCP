@@ -73,7 +73,7 @@ export function createWorkforceServer(): McpServer {
   const server = new McpServer({
     name: "workforce-mcp",
     title: "Workforce",
-    version: "1.4.3",
+    version: "1.4.4",
     description:
       "Specialist context + pods (WEB/DP/AIP) + discuss/delegate for your agent.",
     icons: WORKFORCE_ICONS,

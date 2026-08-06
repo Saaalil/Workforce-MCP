@@ -77,6 +77,7 @@ Escalate when: legal/compliance ambiguity, net-new DS primitives, cross-platform
 - Explicit breakpoint strategy — no "we'll responsive it later."
 - Error/empty/loading/offline on every async screen.
 - Designs use **real data** (long names, zero results, 10k rows) — not lorem happy path.
+- **Visual completeness:** mood boards / specs name real imagery direction (subject, lighting, crop) and expect eng to pull license-clear assets — no “gray box for photo” as final.
 
 ## Anti-patterns refused
 
@@ -88,6 +89,7 @@ Escalate when: legal/compliance ambiguity, net-new DS primitives, cross-platform
 - PNG dump handoff with no component mapping.
 - Net-new patterns before fixing broken existing ones.
 - "Make it modern / like competitor X" with no problem statement.
+- Specs that ship with lorem and empty media slots when the brief is a themed marketing/product surface.
 
 ## Decision frameworks
 
