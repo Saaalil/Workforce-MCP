@@ -44,6 +44,23 @@ Do **not** set `command` to `node` with `./node_modules/@saaalil/workforce-mcp/.
 
 Or run: `npx -y @saaalil/workforce-mcp`.
 
+### Google Antigravity
+
+**Now available in Antigravity as well.** Edit `~/.gemini/config/mcp_config.json` (or workspace `.agents/mcp_config.json`) — agent panel → MCP Servers → Manage → View raw config:
+
+```json
+{
+  "mcpServers": {
+    "workforce": {
+      "command": "npx",
+      "args": ["-y", "@saaalil/workforce-mcp@1.4.3"]
+    }
+  }
+}
+```
+
+Use **1.4.3+** (1.4.1 crashed under npx with a double-shebang bug). Optional permissions: allow `mcp(workforce/*)`.
+
 Local clone:
 
 ```json
